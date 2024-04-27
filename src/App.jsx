@@ -1,39 +1,48 @@
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
+import { useDispatch, useSelector } from "react-redux";
 
 import ContactForm from "./components/ContactForm/ContactForm";
 import SearchBox from "./components/SearchBox/SearchBox";
 import ContactList from "./components/ContactList/ContactList";
+import {
+  addContact,
+  deleteContact,
+  selectContacts,
+} from "./redux/contactsSlice";
+import { selectorFilter, setFilter } from "./redux/filtersSlice";
 
-import phonebookContacts from "./contact.json";
+// import phonebookContacts from "./contact.json";
 
-function App() {
-  const [contacts, setContacts] = useState(() => {
-    const stringifiedContacts = localStorage.getItem("contactsStorage");
-    return JSON.parse(stringifiedContacts) ?? phonebookContacts;
-    // const parsedContacts = JSON.parse(stringifedContacts);
-    // return parsedContacts;
-  });
-  const [filter, setFilter] = useState("");
+const App = () => {
+  // const phonebookContacts = [
+  //   { id: "id-1", name: "Rosie Simpson", number: "459-12-56" },
+  //   { id: "id-2", name: "Hermione Kline", number: "443-89-12" },
+  //   { id: "id-3", name: "Eden Clements", number: "645-17-79" },
+  //   { id: "id-4", name: "Annie Copeland", number: "227-91-26" },
+  // ];
 
-  useEffect(() => {
-    localStorage.setItem("contactsStorage", JSON.stringify(contacts));
-  }, [contacts]);
+  const dispatch = useDispatch();
+  const contacts = useSelector(selectContacts);
+  const filter = useSelector(selectorFilter);
 
   const onAddContact = (formData) => {
     const finalContact = { ...formData, id: nanoid() };
 
-    setContacts((prevState) => [...prevState, finalContact]);
+    dispatch(addContact(finalContact));
+
+    // setContacts((prevState) => [...prevState, finalContact]);
   };
 
   const onDeleteContact = (contactId) => {
-    setContacts((prevContacts) =>
-      prevContacts.filter((contact) => contact.id !== contactId)
-    );
+    // setContacts((prevContacts) =>
+    //   prevContacts.filter((contact) => contact.id !== contactId)
+    // );
+    dispatch(deleteContact(contactId));
   };
 
   const onChangeFilter = (event) => {
-    setFilter(event.target.value);
+    dispatch(setFilter(event.target.value));
   };
   const filteredContacts = contacts.filter(
     (contact) =>
@@ -52,6 +61,6 @@ function App() {
       />
     </>
   );
-}
+};
 
 export default App;
