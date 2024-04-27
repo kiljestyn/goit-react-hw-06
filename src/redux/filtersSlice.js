@@ -9,16 +9,16 @@ const filtersSlice = createSlice({
   initialState: INITAL_STATE,
   // Об'єкт редюсерів
   reducers: {
-    setFilter(state, action) {
+    changeFilter(state, action) {
       state.name = action.payload;
     },
   },
 });
 // Генератори екшенів
-export const { setFilter } = filtersSlice.actions;
+export const { changeFilter } = filtersSlice.actions;
 // Редюсер слайсу
 export const filtersReducer = filtersSlice.reducer;
 
-export const selectorFilter = (state) => {
+export const selectNameFilter = (state) => {
   return state.filters.name;
 };

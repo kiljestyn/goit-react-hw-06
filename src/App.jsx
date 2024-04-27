@@ -10,7 +10,7 @@ import {
   deleteContact,
   selectContacts,
 } from "./redux/contactsSlice";
-import { selectorFilter, setFilter } from "./redux/filtersSlice";
+import { selectNameFilter, changeFilter } from "./redux/filtersSlice";
 
 // import phonebookContacts from "./contact.json";
 
@@ -24,7 +24,7 @@ const App = () => {
 
   const dispatch = useDispatch();
   const contacts = useSelector(selectContacts);
-  const filter = useSelector(selectorFilter);
+  const filter = useSelector(selectNameFilter);
 
   const onAddContact = (formData) => {
     const finalContact = { ...formData, id: nanoid() };
@@ -42,7 +42,7 @@ const App = () => {
   };
 
   const onChangeFilter = (event) => {
-    dispatch(setFilter(event.target.value));
+    dispatch(changeFilter(event.target.value));
   };
   const filteredContacts = contacts.filter(
     (contact) =>
